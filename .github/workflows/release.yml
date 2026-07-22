@@ -7,29 +7,51 @@ on:
 
 jobs:
   build-and-release:
+
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
 
     - name: Setup .NET 8
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
 
     - name: Restore dependencies
       run: dotnet restore CarShellInstaller.sln
 
+
     - name: Build
       run: dotnet build CarShellInstaller.sln --configuration Release --no-restore
 
+
     - name: Publish
-      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:WindowsTargetPlatformVersion=10.0.19041.0
+      run: |
+        dotnet publish CarShellInstaller/CarShellInstaller.csproj `
+          --configuration Release `
+          --output ./publish `
+          --self-contained true `
+          -p:PublishSingleFile=false `
+          -p:PublishTrimmed=false
+
+
+    - name: Create ZIP
+      run: |
+        Compress-Archive -Path ./publish/* -DestinationPath ./CarShellInstaller-${{ github.ref_name }}.zip
+
 
     - name: Create Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
-        files: ./publish/**
         name: Release ${{ github.ref_name }}
         tag_name: ${{ github.ref_name }}
-        body: Automatic release for ${{ github.ref_name }}
+        body: |
+          Automatic release for ${{ github.ref_name }}
+
+        files: |
+          ./CarShellInstaller-${{ github.ref_name }}.zip
