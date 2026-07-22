@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build
 
 on:
   push:
@@ -25,10 +25,11 @@ jobs:
       run: dotnet build CarShellInstaller.sln --configuration Release --no-restore
 
     - name: Publish
-      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false
+      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:WindowsTargetPlatformVersion=10.0.19041.0
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: CarShellInstaller
         path: ./publish
+        retention-days: 7
