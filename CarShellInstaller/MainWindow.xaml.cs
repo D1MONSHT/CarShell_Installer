@@ -2,11 +2,16 @@ using System;
 using System.Windows;
 using System.Windows.Navigation;
 using CarShellInstaller.Views;
-using System.Windows.Controls;
+
 namespace CarShellInstaller
 {
     public partial class MainWindow : Window
     {
+        public string SelectedMode { get; set; } = "Windows";
+        public string SelectedProfile { get; set; } = "Standard";
+        public bool CreateBackup { get; set; } = true;
+        public bool CreateRestorePoint { get; set; } = true;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,7 +40,9 @@ namespace CarShellInstaller
 
         public void NavigateToInstall()
         {
-            MainFrame.Navigate(new InstallPage(this));
+            var installPage = new InstallPage(this);
+            installPage.SetOptions(SelectedMode, SelectedProfile, CreateBackup, CreateRestorePoint);
+            MainFrame.Navigate(installPage);
         }
 
         public void NavigateToFinish()
