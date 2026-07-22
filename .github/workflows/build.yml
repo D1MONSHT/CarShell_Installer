@@ -1,0 +1,67 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore CarShellInstaller.sln
+
+    - name: Build
+      run: dotnet build CarShellInstaller.sln --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CarShellInstaller
+        path: ./publish
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: CarShellInstaller
+        path: ./publish
+
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./publish/**
+        name: CarShellInstaller v1.0
+        tag_name: v1.0
+        body: |
+          First release of CarShellInstaller
+          
+          Features:
+          - WPF .NET 8 application
+          - Installation wizard
+          - Mode selection (Windows/CarShell/Kiosk)
+          - JSON profile system
+          - System backup and restore
+          - Core management modules
+          
+          Download and run CarShellInstaller.exe (requires Administrator privileges)
