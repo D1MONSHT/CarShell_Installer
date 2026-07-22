@@ -1,0 +1,34 @@
+{
+  "ProfileName": "Standard",
+  "Description": "Standard Windows configuration with minimal changes",
+  "Mode": "Windows",
+  "Settings": {
+    "Services": {
+      "DisableUnnecessary": false,
+      "EssentialOnly": false,
+      "DisabledServices": []
+    },
+    "Power": {
+      "DisableSleep": false,
+      "DisableHibernation": false,
+      "DisplayTimeout": 10,
+      "DisableScreenSaver": false
+    },
+    "Registry": {
+      "ApplyCarShellTweaks": false,
+      "ApplyKioskTweaks": false,
+      "CustomTweaks": []
+    },
+    "Shell": {
+      "CustomShell": "explorer.exe",
+      "HideDesktopIcons": false,
+      "DisableTaskbar": false
+    },
+    "Backup": {
+      "CreateBackup": true,
+      "CreateRestorePoint": true
+    }
+  },
+  "Version": "1.0.0",
+  "Created": "2026-07-21"
+}

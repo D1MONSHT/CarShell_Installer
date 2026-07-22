@@ -1,0 +1,38 @@
+{
+  "ProfileName": "ExtremeKiosk",
+  "Description": "Full kiosk mode with maximum security and lockdown",
+  "Mode": "Kiosk",
+  "Settings": {
+    "Services": {
+      "DisableUnnecessary": true,
+      "EssentialOnly": true,
+      "DisabledServices": ["wuauserv", "BITS", "DoSvc", "SysMain", "Schedule", "Themes", "DiagTrack", "WindowsSearch"]
+    },
+    "Power": {
+      "DisableSleep": true,
+      "DisableHibernation": true,
+      "DisplayTimeout": 0,
+      "DisableScreenSaver": true
+    },
+    "Registry": {
+      "ApplyCarShellTweaks": false,
+      "ApplyKioskTweaks": true
+    },
+    "Shell": {
+      "CustomShell": "CarShell.exe",
+      "HideDesktopIcons": true,
+      "DisableTaskbar": true
+    },
+    "Backup": {
+      "CreateBackup": true,
+      "CreateRestorePoint": true
+    },
+    "Security": {
+      "DisableCtrlAltDel": true,
+      "DisableTaskManager": true,
+      "DisableCommandPrompt": true
+    }
+  },
+  "Version": "1.0.0",
+  "Created": "2026-07-21"
+}

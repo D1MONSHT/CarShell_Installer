@@ -1,0 +1,33 @@
+{
+  "ProfileName": "CarMode",
+  "Description": "Optimized configuration for CarShell in automotive environment",
+  "Mode": "CarShell",
+  "Settings": {
+    "Services": {
+      "DisableUnnecessary": true,
+      "EssentialOnly": false,
+      "DisabledServices": ["wuauserv", "BITS", "DoSvc", "SysMain", "Schedule", "Themes", "DiagTrack"]
+    },
+    "Power": {
+      "DisableSleep": true,
+      "DisableHibernation": true,
+      "DisplayTimeout": 0,
+      "DisableScreenSaver": true
+    },
+    "Registry": {
+      "ApplyCarShellTweaks": true,
+      "ApplyKioskTweaks": false
+    },
+    "Shell": {
+      "CustomShell": "CarShell.exe",
+      "HideDesktopIcons": true,
+      "DisableTaskbar": true
+    },
+    "Backup": {
+      "CreateBackup": true,
+      "CreateRestorePoint": true
+    }
+  },
+  "Version": "1.0.0",
+  "Created": "2026-07-21"
+}
