@@ -1,6 +1,6 @@
 using System;
 using System.Windows;
-using System.Windows.Navigation;
+using System.Windows.Controls;
 using CarShellInstaller.Views;
 
 namespace CarShellInstaller
@@ -41,7 +41,12 @@ namespace CarShellInstaller
         public void NavigateToInstall()
         {
             var installPage = new InstallPage(this);
-            installPage.SetOptions(SelectedMode, SelectedProfile, CreateBackup, CreateRestorePoint);
+            installPage.SetOptions(
+                SelectedMode,
+                SelectedProfile,
+                CreateBackup,
+                CreateRestorePoint);
+
             MainFrame.Navigate(installPage);
         }
 
