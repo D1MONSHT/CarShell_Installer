@@ -18,7 +18,8 @@ namespace CarShellInstaller.Views
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            CmbProfile.SelectionChanged += (s, e) => SelectedProfile = (CmbProfile.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Standard";
+            CmbProfile.SelectionChanged += (s, e) => 
+                SelectedProfile = (CmbProfile.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Standard";
         }
 
         private void BtnNext_Click(object sender, RoutedEventArgs e)
