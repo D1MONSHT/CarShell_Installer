@@ -4,54 +4,53 @@ on:
   push:
     tags:
       - 'v*'
+      - 'V*'
 
 jobs:
   build-and-release:
-
     runs-on: windows-latest
 
     steps:
-
-    - name: Checkout
-      uses: actions/checkout@v4
-
+    - uses: actions/checkout@v4
 
     - name: Setup .NET 8
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-
 
     - name: Restore dependencies
       run: dotnet restore CarShellInstaller.sln
 
-
     - name: Build
       run: dotnet build CarShellInstaller.sln --configuration Release --no-restore
 
-
     - name: Publish
-      run: |
-        dotnet publish CarShellInstaller/CarShellInstaller.csproj `
-          --configuration Release `
-          --output ./publish `
-          --self-contained true `
-          -p:PublishSingleFile=false `
-          -p:PublishTrimmed=false
-
-
-    - name: Create ZIP
-      run: |
-        Compress-Archive -Path ./publish/* -DestinationPath ./CarShellInstaller-${{ github.ref_name }}.zip
-
+      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:WindowsTargetPlatformVersion=10.0.19041.0
 
     - name: Create Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v1
       with:
+        files: ./publish/**
         name: Release ${{ github.ref_name }}
         tag_name: ${{ github.ref_name }}
         body: |
-          Automatic release for ${{ github.ref_name }}
-
-        files: |
-          ./CarShellInstaller-${{ github.ref_name }}.zip
+          Release ${{ github.ref_name }} of CarShellInstaller
+          
+          **Download:** CarShellInstaller.exe (run as Administrator)
+          
+          **Features:**
+          - WPF .NET 8 installer application
+          - Installation wizard with 5 pages
+          - Mode selection (Windows/CarShell/Kiosk)
+          - JSON profile system
+          - System backup and restore
+          - Core management modules:
+            * Registry tweaks
+            * Service management
+            * Power settings
+            * Shell configuration
+            * Kiosk mode
+          
+          **Requirements:**
+          - Windows 10/11
+          - Administrator privileges
