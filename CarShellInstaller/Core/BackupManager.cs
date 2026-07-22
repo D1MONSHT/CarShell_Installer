@@ -41,8 +41,8 @@ namespace CarShellInstaller.Core
         {
             try
             {
-                string command = "Checkpoint-Computer -Description '" + description + "' -RestorePointType MODIFY_SETTINGS";
-                System.Diagnostics.Process.Start("powershell", "-Command " + command);
+                System.Diagnostics.Process.Start("powershell", 
+                    "-Command "Checkpoint-Computer -Description '" + description + "' -RestorePointType MODIFY_SETTINGS"");
                 return true;
             }
             catch (Exception ex)
