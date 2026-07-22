@@ -21,10 +21,16 @@
             <StackPanel>
                 <ProgressBar x:Name="ProgressBar" Value="0" Maximum="100" Height="20" Margin="0,0,0,20"/>
                 <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Padding="10">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
-                        <TextBlock x:Name="TxtLog" TextWrapping="Wrap" FontFamily="Consolas"/>
-                    </ScrollViewer>
-                </Border>
+    <TextBox x:Name="TxtLog"
+             Height="300"
+             IsReadOnly="True"
+             TextWrapping="Wrap"
+             FontFamily="Consolas"
+             VerticalScrollBarVisibility="Auto"
+             HorizontalScrollBarVisibility="Disabled"
+             BorderThickness="0"
+             Background="Transparent"/>
+</Border>
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="2" Margin="20" Orientation="Horizontal" HorizontalAlignment="Right">
