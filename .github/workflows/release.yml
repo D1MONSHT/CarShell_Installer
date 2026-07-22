@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore CarShellInstaller.sln
+
+    - name: Build
+      run: dotnet build CarShellInstaller.sln --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./publish/**
+        name: CarShellInstaller ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        body: |
+          Release ${{ github.ref_name }} of CarShellInstaller
+          
+          **Download:** CarShellInstaller.exe (run as Administrator)
+          
+          **Features:**
+          - WPF .NET 8 installer application
+          - Installation wizard with 5 pages
+          - Mode selection (Windows/CarShell/Kiosk)
+          - JSON profile system
+          - System backup and restore
+          - Core management modules
+          
+          **Requirements:**
+          - Windows 10/11
+          - Administrator privileges
+          
+          **Build from source:**
+          ```bash
+          dotnet restore CarShellInstaller.sln
+          dotnet build CarShellInstaller.sln --configuration Release
+          dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish
+          ```
