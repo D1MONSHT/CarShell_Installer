@@ -10,7 +10,7 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon",
+                    @"SOFTWAREMicrosoftWindows NTCurrentVersionWinlogon",
                     "Shell", "explorer.exe", RegistryValueKind.String);
                 return true;
             }
@@ -26,7 +26,7 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon",
+                    @"SOFTWAREMicrosoftWindows NTCurrentVersionWinlogon",
                     "Shell", "explorer.exe", RegistryValueKind.String);
                 return true;
             }

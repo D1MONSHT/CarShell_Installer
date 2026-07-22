@@ -10,16 +10,16 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System",
+                    @"SOFTWAREMicrosoftWindowsCurrentVersionPoliciesSystem",
                     "DisableLockWorkstation", 1, RegistryValueKind.DWord);
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System",
+                    @"SOFTWAREMicrosoftWindowsCurrentVersionPoliciesSystem",
                     "DisableTaskMgr", 1, RegistryValueKind.DWord);
                 SetRegistryValue(Registry.CurrentUser,
-                    @"SOFTWARE\Policies\Microsoft\Windows\System",
+                    @"SOFTWAREPoliciesMicrosoftWindowsSystem",
                     "DisableCMD", 1, RegistryValueKind.DWord);
                 SetRegistryValue(Registry.CurrentUser,
-                    @"SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Policies\System",
+                    @"SOFTWAREPoliciesMicrosoftWindowsCurrentVersionPoliciesSystem",
                     "DisableRegistryTools", 1, RegistryValueKind.DWord);
                 return true;
             }

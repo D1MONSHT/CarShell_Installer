@@ -10,13 +10,13 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.LocalMachine, 
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update",
+                    @"SOFTWAREMicrosoftWindowsCurrentVersionWindowsUpdateAuto Update",
                     "AUOptions", 1, RegistryValueKind.DWord);
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SYSTEM\CurrentControlSet\Services\wuauserv",
+                    @"SYSTEMCurrentControlSetServiceswuauserv",
                     "Start", 4, RegistryValueKind.DWord);
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SYSTEM\CurrentControlSet\Control\PriorityControl",
+                    @"SYSTEMCurrentControlSetControlPriorityControl",
                     "Win32PrioritySeparation", 26, RegistryValueKind.DWord);
                 return true;
             }
@@ -32,10 +32,10 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System",
+                    @"SOFTWAREMicrosoftWindowsCurrentVersionPoliciesSystem",
                     "DisableLockWorkstation", 1, RegistryValueKind.DWord);
                 SetRegistryValue(Registry.LocalMachine,
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System",
+                    @"SOFTWAREMicrosoftWindowsCurrentVersionPoliciesSystem",
                     "DisableTaskMgr", 1, RegistryValueKind.DWord);
                 return true;
             }
