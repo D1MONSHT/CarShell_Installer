@@ -1,0 +1,36 @@
+<Page x:Class="CarShellInstaller.Views.ModePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:CarShellInstaller.Views"
+      mc:Ignorable="d"
+      d:DesignHeight="550" d:DesignWidth="750"
+      Title="Mode Selection">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="20" Orientation="Vertical">
+            <TextBlock Text="Select Installation Mode" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Choose how you want to configure your system" FontSize="14" Foreground="Gray" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Margin="40" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <RadioButton x:Name="RbtnWindows" Content="Windows Mode" FontSize="16" Margin="0,10,0,5" GroupName="InstallMode" IsChecked="True"/>
+                <TextBlock Text="Standard Windows configuration with all features enabled." TextWrapping="Wrap" Margin="20,0,0,20" Foreground="Gray"/>
+                <RadioButton x:Name="RbtnCarShell" Content="CarShell Mode" FontSize="16" Margin="0,10,0,5" GroupName="InstallMode"/>
+                <TextBlock Text="Optimized configuration for CarShell. Disables unnecessary services and applies car-specific optimizations." TextWrapping="Wrap" Margin="20,0,0,20" Foreground="Gray"/>
+                <RadioButton x:Name="RbtnKiosk" Content="Kiosk Mode" FontSize="16" Margin="0,10,0,5" GroupName="InstallMode"/>
+                <TextBlock Text="Full kiosk mode. Locks down the system and disables all unnecessary features for maximum security." TextWrapping="Wrap" Margin="20,0,0,20" Foreground="Gray"/>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="2" Margin="20" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="BtnBack" Content="< Back" Width="100" Height="35" Margin="0,0,10,0" Click="BtnBack_Click"/>
+            <Button x:Name="BtnNext" Content="Next >" Width="100" Height="35" Click="BtnNext_Click"/>
+            <Button x:Name="BtnCancel" Content="Cancel" Width="100" Height="35" Margin="10,0,0,0" Click="BtnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
