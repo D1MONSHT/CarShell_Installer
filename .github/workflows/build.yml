@@ -6,15 +6,19 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Setup .NET 8
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
@@ -25,11 +29,19 @@ jobs:
       run: dotnet build CarShellInstaller.sln --configuration Release --no-restore
 
     - name: Publish
-      run: dotnet publish CarShellInstaller/CarShellInstaller.csproj --configuration Release --output ./publish --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:WindowsTargetPlatformVersion=10.0.19041.0
+      run: |
+        dotnet publish CarShellInstaller/CarShellInstaller.csproj `
+          --configuration Release `
+          --runtime win-x64 `
+          --self-contained true `
+          --output ./publish `
+          -p:PublishSingleFile=true `
+          -p:PublishTrimmed=false `
+          -p:WindowsTargetPlatformVersion=10.0.19041.0
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: CarShellInstaller
-        path: ./publish
+        name: CarShellInstaller-win-x64
+        path: ./publish/*
         retention-days: 7
