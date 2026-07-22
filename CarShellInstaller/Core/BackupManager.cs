@@ -42,7 +42,7 @@ namespace CarShellInstaller.Core
             try
             {
                 System.Diagnostics.Process.Start("powershell", 
-                    "-Command "Checkpoint-Computer -Description "'" + description + ""' -RestorePointType MODIFY_SETTINGS"");
+                    "-Command "Checkpoint-Computer -Description '" + description + "' -RestorePointType MODIFY_SETTINGS"");
                 return true;
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace CarShellInstaller.Core
         {
             try
             {
-                string keyPath = string.IsNullOrEmpty(subKey) ? root.Name : root.Name + "\" + subKey;
+                string keyPath = string.IsNullOrEmpty(subKey) ? root.Name : root.Name + "\\" + subKey;
                 System.Diagnostics.Process.Start("reg", "export "" + keyPath + "" "" + filePath + "" /y")?.WaitForExit();
             }
             catch (Exception ex)
