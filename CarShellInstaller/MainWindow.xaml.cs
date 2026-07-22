@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Navigation;
 using CarShellInstaller.Views;
-
+using System.Windows.Controls;
 namespace CarShellInstaller
 {
     public partial class MainWindow : Window
