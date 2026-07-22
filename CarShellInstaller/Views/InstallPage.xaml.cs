@@ -55,7 +55,7 @@ namespace CarShellInstaller.Views
             BtnBack.IsEnabled = false;
             BtnCancel.IsEnabled = false;
             TxtStatus.Text = "Starting installation...";
-            TxtLog.Text = "";
+            TxtLog.Text = string.Empty;
             ProgressBar.Value = 0;
             
             try
@@ -69,11 +69,11 @@ namespace CarShellInstaller.Views
                 {
                     if (_backupManager.CreateBackup())
                     {
-                        Log("  ✓ System backup created");
+                        Log("  Success: System backup created");
                     }
                     else
                     {
-                        Log("  ✗ Failed to create backup");
+                        Log("  Warning: Failed to create backup");
                     }
                 }
                 
@@ -82,13 +82,13 @@ namespace CarShellInstaller.Views
                 Log("Step 2/6: Creating Windows restore point...");
                 if (_createRestorePoint)
                 {
-                    if (_backupManager.CreateRestorePoint("CarShell Installer - " + _selectedMode))
+                    if (_backupManager.CreateRestorePoint(_selectedMode))
                     {
-                        Log("  ✓ Restore point created");
+                        Log("  Success: Restore point created");
                     }
                     else
                     {
-                        Log("  ✗ Failed to create restore point");
+                        Log("  Warning: Failed to create restore point");
                     }
                 }
                 
@@ -99,22 +99,22 @@ namespace CarShellInstaller.Views
                 {
                     if (_registryManager.ApplyCarShellTweaks())
                     {
-                        Log("  ✓ CarShell registry tweaks applied");
+                        Log("  Success: CarShell registry tweaks applied");
                     }
                     else
                     {
-                        Log("  ✗ Failed to apply CarShell tweaks");
+                        Log("  Warning: Failed to apply CarShell tweaks");
                     }
                 }
                 else if (_selectedMode == "Kiosk")
                 {
                     if (_registryManager.ApplyKioskTweaks())
                     {
-                        Log("  ✓ Kiosk registry tweaks applied");
+                        Log("  Success: Kiosk registry tweaks applied");
                     }
                     else
                     {
-                        Log("  ✗ Failed to apply Kiosk tweaks");
+                        Log("  Warning: Failed to apply Kiosk tweaks");
                     }
                 }
                 
@@ -125,11 +125,11 @@ namespace CarShellInstaller.Views
                 {
                     if (_serviceManager.DisableUnnecessaryServices())
                     {
-                        Log("  ✓ Unnecessary services disabled");
+                        Log("  Success: Unnecessary services disabled");
                     }
                     else
                     {
-                        Log("  ✗ Failed to disable services");
+                        Log("  Warning: Failed to disable services");
                     }
                 }
                 
@@ -140,69 +140,67 @@ namespace CarShellInstaller.Views
                 {
                     if (_powerManager.OptimizeForCar())
                     {
-                        Log("  ✓ Car power settings applied");
+                        Log("  Success: Car power settings applied");
                     }
                     else
                     {
-                        Log("  ✗ Failed to apply power settings");
+                        Log("  Warning: Failed to apply power settings");
                     }
                 }
                 else if (_selectedMode == "Kiosk")
                 {
                     if (_powerManager.OptimizeForKiosk())
                     {
-                        Log("  ✓ Kiosk power settings applied");
+                        Log("  Success: Kiosk power settings applied");
                     }
                     else
                     {
-                        Log("  ✗ Failed to apply power settings");
+                        Log("  Warning: Failed to apply power settings");
                     }
                 }
                 
-                // Step 6: Configure shell (if CarShell mode)
+                // Step 6: Configure shell
                 ProgressBar.Value = 80;
                 Log("Step 6/6: Configuring shell...");
                 if (_selectedMode == "CarShell")
                 {
-                    string carShellPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), 
-                        "CarShell", "CarShell.exe");
+                    string carShellPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "CarShell", "CarShell.exe");
                     if (File.Exists(carShellPath))
                     {
                         if (_shellManager.ConfigureForCarShell(carShellPath))
                         {
-                            Log("  ✓ Shell configured for CarShell");
+                            Log("  Success: Shell configured for CarShell");
                         }
                         else
                         {
-                            Log("  ✗ Failed to configure shell (CarShell.exe not found)");
+                            Log("  Warning: Failed to configure shell");
                         }
                     }
                     else
                     {
-                        Log("  ! CarShell.exe not found at: " + carShellPath);
-                        Log("  ! Shell not changed. Please install CarShell first.");
+                        Log("  Note: CarShell.exe not found. Shell not changed.");
                     }
                 }
                 else if (_selectedMode == "Kiosk")
                 {
                     if (_kioskManager.ConfigureKioskMode())
                     {
-                        Log("  ✓ Kiosk mode configured");
+                        Log("  Success: Kiosk mode configured");
                     }
                     else
                     {
-                        Log("  ✗ Failed to configure kiosk mode");
+                        Log("  Warning: Failed to configure kiosk mode");
                     }
                 }
                 
                 ProgressBar.Value = 100;
                 TxtStatus.Text = "Installation completed!";
-                Log("
-=== Installation Complete ===");
+                Log(string.Empty);
+                Log("=== Installation Complete ===");
                 Log("Mode: " + _selectedMode);
                 Log("Profile: " + _selectedProfile);
-                Log("
-Note: Some changes require a system restart to take effect.");
+                Log(string.Empty);
+                Log("Note: Some changes require a system restart to take effect.");
                 
                 var finishPage = new FinishPage(_mainWindow);
                 finishPage.SetResult(true, _selectedMode, _selectedProfile);
@@ -211,11 +209,11 @@ Note: Some changes require a system restart to take effect.");
             catch (Exception ex)
             {
                 TxtStatus.Text = "Installation failed!";
-                Log("
-=== ERROR ===");
+                Log(string.Empty);
+                Log("=== ERROR ===");
                 Log("Exception: " + ex.Message);
-                Log("
-Stack Trace:");
+                Log(string.Empty);
+                Log("Stack Trace:");
                 Log(ex.StackTrace);
                 
                 BtnInstall.IsEnabled = true;
