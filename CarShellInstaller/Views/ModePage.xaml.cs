@@ -6,15 +6,15 @@ namespace CarShellInstaller.Views
     public partial class ModePage : Page
     {
         private readonly MainWindow _mainWindow;
-        public string SelectedMode { get; private set; } = "Windows";
 
         public ModePage(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            RbtnWindows.Checked += (s, e) => SelectedMode = "Windows";
-            RbtnCarShell.Checked += (s, e) => SelectedMode = "CarShell";
-            RbtnKiosk.Checked += (s, e) => SelectedMode = "Kiosk";
+            
+            RbtnWindows.Checked += (s, e) => _mainWindow.SelectedMode = "Windows";
+            RbtnCarShell.Checked += (s, e) => _mainWindow.SelectedMode = "CarShell";
+            RbtnKiosk.Checked += (s, e) => _mainWindow.SelectedMode = "Kiosk";
         }
 
         private void BtnNext_Click(object sender, RoutedEventArgs e)
