@@ -28,7 +28,7 @@
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="2" Margin="20" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="BtnBack" Content="&lt; Back" Width="100" Height="35" Margin="0,0,10,0" Click="BtnBack_Click"/>
+            <Button x:Name="BtnBack" Content="Back" Width="100" Height="35" Margin="0,0,10,0" Click="BtnBack_Click"/>
             <Button x:Name="BtnInstall" Content="Install" Width="100" Height="35" Click="BtnInstall_Click"/>
             <Button x:Name="BtnCancel" Content="Cancel" Width="100" Height="35" Margin="10,0,0,0" Click="BtnCancel_Click"/>
         </StackPanel>
