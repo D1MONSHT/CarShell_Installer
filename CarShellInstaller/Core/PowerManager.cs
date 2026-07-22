@@ -10,7 +10,7 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.CurrentUser,
-                    @"Control Panel\Desktop",
+                    @"Control PanelDesktop",
                     "ScreenSaveActive", "0", RegistryValueKind.String);
                 return true;
             }
@@ -31,7 +31,7 @@ namespace CarShellInstaller.Core
             try
             {
                 SetRegistryValue(Registry.CurrentUser,
-                    @"Control Panel\Desktop",
+                    @"Control PanelDesktop",
                     "ScreenSaveActive", "1", RegistryValueKind.String);
                 return true;
             }
