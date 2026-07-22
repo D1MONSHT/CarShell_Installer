@@ -1,6 +1,5 @@
 using Microsoft.Win32;
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace CarShellInstaller.Core
@@ -13,9 +12,7 @@ namespace CarShellInstaller.Core
         {
             _backupDirectory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                "CarShellInstaller",
-                "Backups");
-
+                "CarShellInstaller", "Backups");
             Directory.CreateDirectory(_backupDirectory);
         }
 
@@ -24,22 +21,36 @@ namespace CarShellInstaller.Core
             try
             {
                 string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                string backupPath = Path.Combine(_backupDirectory, $"Backup_{timestamp}");
-
+                string backupPath = Path.Combine(_backupDirectory, "Backup_" + timestamp);
                 Directory.CreateDirectory(backupPath);
-
+                
                 string regBackupPath = Path.Combine(backupPath, "Registry");
                 Directory.CreateDirectory(regBackupPath);
-
+                
+                // Export critical registry keys
                 ExportRegistryKey(Registry.LocalMachine, "SOFTWARE", Path.Combine(regBackupPath, "SOFTWARE.reg"));
                 ExportRegistryKey(Registry.LocalMachine, "SYSTEM", Path.Combine(regBackupPath, "SYSTEM.reg"));
-                ExportRegistryKey(Registry.CurrentUser, "", Path.Combine(regBackupPath, "USER.reg"));
-
+                ExportRegistryKey(Registry.CurrentUser, string.Empty, Path.Combine(regBackupPath, "USER.reg"));
+                
+                // Export services configuration
+                ExportRegistryKey(Registry.LocalMachine, "SYSTEMCurrentControlSetServices", Path.Combine(regBackupPath, "Services.reg"));
+                
+                // Export Windows policies
+                ExportRegistryKey(Registry.LocalMachine, "SOFTWAREMicrosoftWindowsCurrentVersionPolicies", Path.Combine(regBackupPath, "Policies.reg"));
+                
+                // Save backup info
+                File.WriteAllText(Path.Combine(backupPath, "backup.info"), 
+                    "CarShell Installer Backup
+" +
+                    "Created: " + DateTime.Now.ToString() + "
+" +
+                    "Mode: Full System Backup");
+                
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Error creating backup: " + ex.Message);
                 return false;
             }
         }
@@ -48,19 +59,46 @@ namespace CarShellInstaller.Core
         {
             try
             {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = $"-Command \"Checkpoint-Computer -Description '{description}' -RestorePointType MODIFY_SETTINGS\"",
-                    UseShellExecute = true,
-                    Verb = "runas"
-                });
-
+                string safeDescription = description.Replace("'", "''");
+                System.Diagnostics.Process.Start("powershell", 
+                    "-Command "Checkpoint-Computer -Description '" + safeDescription + "' -RestorePointType MODIFY_SETTINGS -ErrorAction SilentlyContinue"",
+                    new System.Diagnostics.ProcessStartInfo
+                    {
+                        CreateNoWindow = true,
+                        UseShellExecute = false
+                    });
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Error creating restore point: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool RestoreBackup(string backupPath)
+        {
+            try
+            {
+                string regPath = Path.Combine(backupPath, "Registry");
+                if (Directory.Exists(regPath))
+                {
+                    string[] regFiles = Directory.GetFiles(regPath, "*.reg");
+                    foreach (string regFile in regFiles)
+                    {
+                        System.Diagnostics.Process.Start("reg", "import "" + regFile + """,
+                            new System.Diagnostics.ProcessStartInfo
+                            {
+                                CreateNoWindow = true,
+                                UseShellExecute = false
+                            })?.WaitForExit();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error restoring backup: " + ex.Message);
                 return false;
             }
         }
@@ -69,21 +107,18 @@ namespace CarShellInstaller.Core
         {
             try
             {
-                string keyPath = string.IsNullOrEmpty(subKey)
-                    ? root.Name
-                    : $"{root.Name}\\{subKey}";
-
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "reg.exe",
-                    Arguments = $"export \"{keyPath}\" \"{filePath}\" /y",
-                    CreateNoWindow = true,
-                    UseShellExecute = false
-                })?.WaitForExit();
+                string keyPath = string.IsNullOrEmpty(subKey) ? root.Name : Path.Combine(root.Name, subKey);
+                System.Diagnostics.Process.Start("reg", 
+                    "export "" + keyPath + "" "" + filePath + "" /y",
+                    new System.Diagnostics.ProcessStartInfo
+                    {
+                        CreateNoWindow = true,
+                        UseShellExecute = false
+                    })?.WaitForExit();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Error exporting registry: " + ex.Message);
             }
         }
     }
